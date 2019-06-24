@@ -97,7 +97,7 @@ type Message struct {
 ```js
 var dataqueue = []
 function push (m) {
-  if (!dataqueue) = { dataqueue = [] }
+  if (!dataqueue) { dataqueue = [] }
   dataqueue.push(m)
 }
 
@@ -107,4 +107,74 @@ function pop () {
 }
 ```
 
-- start from 4.7
+# DB
+
+## Database CRUD Steps
+```golang
+// 1. init db
+xorm.NewSession(drivername, datasourcename)
+
+// 2. model layer entity - define model or entity
+type User struct {
+    Id      int64    `xorm: "pk autoincr bigint(20)"`
+    Mobile  string   `xorm: "varchar(20)"`
+    Name    string   `...`
+}
+
+// 3. service layer
+- find one
+DbEngine.ID(userId).Get(&User)
+
+- search, return multiple records
+result := make([]User, 0)
+DbEngine.where("a=? and b=?", a, b).Find(&result)
+
+- create single record
+DbEngine.InsertOne(&User)
+
+- update
+DbEngine.ID(userId).Update(&User)
+DbEngine.Where("a=? and b=?", a, b).Update(&User)
+DbEngine.ID(userId).Cols("field1, field2, field3").Update(&User)
+
+- delete
+DbEngine.ID(userId).Delete(&User)
+
+- md5
+import (
+    "crypto/md5"
+    "encoding/hex"
+    "strings"
+)
+
+func Md5Encode(data string) string {
+    h := md5.New()
+    h.Write([]byte(data))
+    cipherStr := h.Sum(hil)
+    
+    return hex.EncodeToString(cipherStr)
+}
+
+func MD5Encode(data string) string {
+    return strings.ToUpper(Md5Encode(data))
+} 
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
